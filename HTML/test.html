@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход с Firebase</title>
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: #dc3545;
+    }
+
+    .success {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Вход</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" name="email" placeholder="Имейл" required>
+      <input type="password" id="loginPassword" name="password" placeholder="Парола" required>
+      <button type="submit">Вход</button>
+    </form>
+    <p id="message" class="message"></p>
+    <p>Нямате акаунт? <a href="signup.html">Регистрирайте се</a></p> <!-- Пренасочване към страницата за регистрация -->
+  </div>
+
+  <!-- Включване на Firebase SDK директно -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+
+  <!-- Конфигурация на Firebase за уеб приложението ви -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
+      authDomain: "auto-shop-6eff9.firebaseapp.com",
+      projectId: "auto-shop-6eff9",
+      storageBucket: "auto-shop-6eff9.appspot.com",
+      messagingSenderId: "373886419201",
+      appId: "1:373886419201:web:eee6d2871b326dbb911b00",
+      measurementId: "G-FB36CP4YQZ"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Вашият скрипт за вход
+    const loginForm = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = loginEmail.value;
+      const password = loginPassword.value;
+
+      try {
+        // Влизане на потребител с имейл и парола
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        // Пренасочване към началната страница след успешен вход
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            window.location.href = 'index.html';
+          }
+        });
+      } catch (error) {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          message.innerHTML = 'Невалиден имейл или парола';
+        } else {
+          message.innerHTML = error.message;
+        }
+        message.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>

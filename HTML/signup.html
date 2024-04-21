@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация с Firebase</title>
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: #dc3545;
+    }
+
+    .success {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Регистрирай се</h2>
+    <form id="registerForm">
+      <input type="email" id="registerEmail" name="email" placeholder="Имейл" required>
+      <input type="text" id="registerFirstName" name="firstName" placeholder="Име" required>
+      <input type="text" id="registerLastName" name="lastName" placeholder="Фамилия" required>
+      <input type="tel" id="registerPhone" name="phone" placeholder="Телефон" required>
+      <input type="password" id="registerPassword" name="password" placeholder="Парола" required>
+      <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Потвърди паролата" required>
+      <button type="submit">Регистрирай се</button>
+    </form>
+    <p id="message" class="message"></p>
+  </div>
+
+  <!-- Включване на Firebase SDK директно -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+  <!-- Конфигурация на Firebase за вашето уеб приложение -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
+      authDomain: "auto-shop-6eff9.firebaseapp.com",
+      projectId: "auto-shop-6eff9",
+      storageBucket: "auto-shop-6eff9.appspot.com",
+      messagingSenderId: "373886419201",
+      appId: "1:373886419201:web:eee6d2871b326dbb911b00",
+      measurementId: "G-FB36CP4YQZ"
+    };
+    // Инициализация на Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+
+    // Скрипт за регистрация
+    const registerForm = document.getElementById('registerForm');
+    const message = document.getElementById('message');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = registerEmail.value;
+      const firstName = registerFirstName.value;
+      const lastName = registerLastName.value;
+      const phone = registerPhone.value;
+      const password = registerPassword.value;
+      const confirmPassword = registerConfirmPassword.value;
+
+      if (password !== confirmPassword) {
+        message.innerHTML = 'Паролите не съвпадат';
+        message.className = 'error';
+        return;
+      }
+
+      try {
+        // Създаване на потребител с имейл и парола
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const uid = userCredential.user.uid;
+
+        // Запазване на данни за потребителя в Firestore базата данни
+        await db.collection('users').doc(uid).set({
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          uid: uid
+        });
+
+        message.innerHTML = 'Регистриран успешно!';
+        message.className = 'success';
+
+        // Пренасочване към страницата за вход след успешна регистрация
+        window.location.href = 'login.html';
+      } catch (error) {
+        if (error.code === 'auth/invalid-email' || error.code === 'auth/weak-password') {
+          message.innerHTML = 'Невалиден имейл или парола';
+        } else {
+          message.innerHTML = error.message;
+        }
+        message.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>

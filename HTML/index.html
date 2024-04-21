@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проектче</title>
+    <link rel="stylesheet" href="C:\Users\35987\Desktop\Нова папка\style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        
+        /* Стилове за формите за вход и регистрация */
+        .form-container {
+            display: none;
+            /* По подразбиране скрито */
+            max-width: 300px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+
+        .form-container input[type="email"],
+        .form-container input[type="password"],
+        .form-container input[type="text"],
+        .form-container button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #bg-image {
+            z-index: -1;
+            object-fit: cover;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page" class="site page-home">
+        <header>
+            <div class="header-top mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <div class="left">
+                            <!-- Добавете съдържание тук при необходимост -->
+                        </div>
+                        <div class="right">
+                            <!-- Добавете съдържание тук при необходимост -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <a href="#" class="trigger desktop-hide"><i class="ri-menu-2-line"></i></a>
+                        <div class="left flexitem">
+                            <div class="logo"><a href="index.html"><span class="circle">VL</span></a></div>
+                            <nav class="mobile-hide">
+                                <ul class="flexitem second-links">
+                                    <li><a href="index.html">Начало</a></li>
+                                    <li><a href="page-single.html">Магазин</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right">
+                            <ul class="flexitem second-links">
+
+                                <li><a href="#" class="iscart">
+                                        <div class="icon-large">
+                                            <i class="ri-shopping-cart-line"></i>
+                                            <div class="fly-item"><span class="item-number">0</span></div>
+                                        </div>
+
+                                    </a></li>
+                                <!-- Бутон за вход/изход -->
+                                <li id="loginLink"><a href="#" onclick="toggleLogin()">Вход</a></li>
+                                <li><a> </a></li>
+                                <li id="logoutLink" style="display: none;"><a href="#" onclick="logout()">Изход</a></li>
+                                <li id="registerLink" style="display: none;"><a href="#"
+                                        onclick="toggleRegister()">Регистрация</a></li>
+                                <li id="addProductLink" style="display: none;"><a href="#"
+                                        onclick="toggleAddProduct()">Добави Продукт</a></li>
+                                <li><a> </a></li>
+                                <li id="loginStateContainer"></li> <!-- Тук ще се показва състоянието на входа -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+        <img src="C:\Users\35987\Desktop\posledno\Нова папка\Assets\4k-ultra-hd-mustang-cars-at-dusk-5hu7jijq00jhslg3.jpg"
+            id="bg-image">
+        <main>
+            <div class="slider">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="myslider swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <!-- Добавете съдържание тук за слайдовете, ако е необходимо -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <div id="loginFormContainer" class="form-container">
+        <h2>Вход</h2>
+        <form id="loginForm">
+            <input type="email" placeholder="Електронна поща" required name="email"><br>
+            <input type="password" placeholder="Парола" required name="password"><br>
+            <button type="submit">Вход</button>
+        </form>
+        <p>Нямате акаунт? <a href="#" onclick="toggleRegister()">Регистрация</a></p>
+    </div>
+
+    <div id="registerFormContainer" class="form-container">
+        <h2>Регистрация</h2>
+        <form id="registerForm">
+            <input type="email" placeholder="Електронна поща" required name="email"><br>
+            <input type="password" placeholder="Парола" required name="password"><br>
+            <button type="submit">Регистрация</button>
+        </form>
+        <p>Вече имате акаунт? <a href="#" onclick="toggleLogin()">Вход</a></p>
+    </div>
+
+    <div id="addProductFormContainer" class="form-container" style="display: none;">
+        <h2>Добави Продукт</h2>
+        <form id="addProductForm">
+            <input type="text" placeholder="Заглавие на Продукта" required name="title"><br>
+            <input type="text" placeholder="Описание на Продукта" required name="description"><br>
+            <input type="text" placeholder="URL на изображение на Продукта" required name="imageURL"><br>
+            <input type="number" placeholder="Цена на Продукта" required name="price"><br>
+            <button type="submit">Добави Продукт</button>
+        </form>
+    </div>
+
+    <!-- Скриптове за вход, регистрация и изход -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.getElementById('featured-products-btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('featured-products').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+
+    <!-- Скриптове за употребителска аутентикация -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Конфигурация на Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
+            authDomain: "auto-shop-6eff9.firebaseapp.com",
+            projectId: "auto-shop-6eff9",
+            storageBucket: "auto-shop-6eff9.appspot.com",
+            messagingSenderId: "373886419201",
+            appId: "1:373886419201:web:eee6d2871b326dbb911b00",
+            measurementId: "G-FB36CP4YQZ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        // Функция за превключване на формите за вход и регистрация
+        function toggleLogin() {
+            document.getElementById("loginFormContainer").style.display = "block";
+            document.getElementById("registerFormContainer").style.display = "none";
+            document.getElementById("addProductFormContainer").style.display = "none";
+        }
+
+        function toggleRegister() {
+            document.getElementById("loginFormContainer").style.display = "none";
+            document.getElementById("registerFormContainer").style.display = "block";
+            document.getElementById("addProductFormContainer").style.display = "none";
+        }
+
+        function toggleAddProduct() {
+            document.getElementById("loginFormContainer").style.display = "none";
+            document.getElementById("registerFormContainer").style.display = "none";
+            document.getElementById("addProductFormContainer").style.display = "block";
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Изход успешен.
+                document.getElementById("logoutLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("registerLink").style.display = "block";
+                document.getElementById("addProductLink").style.display = "none";
+                document.getElementById("loginStateContainer").innerHTML = ""; // Изчистване на състоянието на входа
+                localStorage.removeItem('user'); // Премахване на информация за потребителя от localStorage
+            }).catch((error) => {
+                // Възникна грешка.
+                console.error('Грешка при излизане:', error);
+            });
+        }
+
+        // Функция за проверка на състоянието на аутентикацията и актуализиране на UI спрямо това
+        function checkAuthState() {
+            const loginStateContainer = document.getElementById("loginStateContainer");
+            const userString = localStorage.getItem('user');
+            if (userString) {
+                const user = JSON.parse(userString);
+                loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
+                document.getElementById("logoutLink").style.display = "block";
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("registerLink").style.display = "none";
+                document.getElementById("addProductLink").style.display = "block";
+            } else {
+                const user = firebase.auth().currentUser;
+                if (user) {
+                    loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
+                    document.getElementById("logoutLink").style.display = "block";
+                    document.getElementById("loginLink").style.display = "none";
+                    document.getElementById("registerLink").style.display = "none";
+                    document.getElementById("addProductLink").style.display = "block";
+                } else {
+                    loginStateContainer.innerHTML = "<p>Не сте влезнали</p>";
+                    document.getElementById("logoutLink").style.display = "none";
+                    document.getElementById("loginLink").style.display = "block";
+                    document.getElementById("registerLink").style.display = "block";
+                    document.getElementById("addProductLink").style.display = "none";
+                }
+            }
+        }
+
+        // Абониране за промените в състоянието на аутентикацията
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Потребителят е влязъл.
+                localStorage.setItem('user', JSON.stringify(user)); // Съхранение на информация за потребителя в localStorage
+            } else {
+                // Никой потребител не е влязъл.
+                localStorage.removeItem('user'); // Премахване на информация за потребителя от localStorage
+            }
+            checkAuthState(); // Актуализиране на UI
+        });
+
+        // Обработчик за изпращане на формата за вход
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Предотвратяване на презареждането на страницата
+            const email = document.getElementById("loginForm").elements["email"].value;
+            const password = document.getElementById("loginForm").elements["password"].value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Вход успешен.
+                    console.log("Потребителят влязъл:", userCredential.user);
+                    document.getElementById("loginFormContainer").style.display = "none"; // Скриване на формата
+                    document.getElementById("loginSuccessMessage").style.display = "block"; // Показване на съобщението за успех
+                    setTimeout(function () {
+                        document.getElementById("loginSuccessMessage").style.display = "none"; // Скриване на съобщението за успех след 3 секунди
+                    }, 3000);
+                })
+                .catch((error) => {
+                    // Възникна грешка.
+                    console.error("Грешка при вход:", error);
+                });
+        });
+
+        // Обработчик за изпращане на формата за регистрация
+        document.getElementById("registerForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Предотвратяване на презареждането на страницата
+            const email = document.getElementById("registerForm").elements["email"].value;
+            const password = document.getElementById("registerForm").elements["password"].value;
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Регистрация успешна.
+                    console.log("Потребителят се регистрира:", userCredential.user);
+                    document.getElementById("registerFormContainer").style.display = "none"; // Скриване на формата
+                    document.getElementById("registerSuccessMessage").style.display = "block"; // Показване на съобщението за успех
+                    setTimeout(function () {
+                        document.getElementById("registerSuccessMessage").style.display = "none"; // Скриване на съобщението за успех след 3 секунди
+                    }, 3000);
+                })
+                .catch((error) => {
+                    // Възникна грешка.
+                    console.error("Грешка при регистрация:", error);
+                });
+        });
+
+        // Обработчик за изпращане на формата за добавяне на продукт
+        document.getElementById("addProductForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Предотвратяване на презареждането на страницата
+            const title = document.getElementById("addProductForm").elements["title"].value;
+            const description = document.getElementById("addProductForm").elements["description"].value;
+            const imageURL = document.getElementById("addProductForm").elements["imageURL"].value;
+            const price = parseFloat(document.getElementById("addProductForm").elements["price"].value);
+
+            db.collection("products").add({
+                title: title,
+                description: description,
+                imageURL: imageURL,
+                price: price
+            })
+                .then((docRef) => {
+                    console.log("Продуктът беше добавен с ID: ", docRef.id);
+                    document.getElementById("addProductFormContainer").style.display = "none"; // Скриване на формата
+                    document.getElementById("productAddedMessage").style.display = "block"; // Показване на съобщението за успех
+                    setTimeout(function () {
+                        document.getElementById("productAddedMessage").style.display = "none"; // Скриване на съобщението за успех след 3 секунди
+                    }, 3000);
+                })
+                .catch((error) => {
+                    console.error("Грешка при добавяне на продукт: ", error);
+                });
+        });
+    </script>
+</body>
+
+</html>

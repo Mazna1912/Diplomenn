@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проектче</title>
+    <link rel="stylesheet" href="C:\Users\35987\Desktop\Нова папка\style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        /* Стилове за формите за вход и регистрация */
+        .form-container {
+            display: none; /* По подразбиране скрито */
+            max-width: 300px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        .form-container input[type="email"],
+        .form-container input[type="password"],
+        .form-container input[type="text"],
+        .form-container button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        /* Стилове за кошницата */
+        .cart-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            background-color: #f2f2f2;
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .cart-container.open {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .cart-close {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            max-width: 50px;
+            height: auto;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .cart-item-name {
+            flex-grow: 1;
+        }
+
+        .cart-item-remove {
+            color: red;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Стилове за продуктовите кутии */
+        .product-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-box h3 {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .product-box p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .product-box .price {
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .add-to-cart-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #45a049;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Разпределя продуктите равномерно по ширина */
+        }
+
+        .product-box {
+            width: calc(33.33% - 20px); /* Третина от ширината на родителския елемент, защитена от външните отстъпи */
+            margin-bottom: 20px;
+        }
+
+        /* Променени стилове за да центрирате заглавието "Продукти" */
+        .container h2 {
+            text-align: center; /* Центрирайте текста */
+            margin-bottom: 20px; /* Подравняващо между заглавието и продуктите */
+        }
+
+        /* Стилове за филтрите на категориите */
+        .category-filters {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .category-filter {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .category-filter.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="page" class="site page-home">
+        <header>
+            <div class="header-top mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <div class="left">
+                            <!-- Добавете съдържание тук, ако е необходимо -->
+                        </div>
+                        <div class="right">
+                            <!-- Добавете съдържание тук, ако е необходимо -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <a href="#" class="trigger desktop-hide"><i class="ri-menu-2-line"></i></a>
+                        <div class="left flexitem">
+                            <div class="logo"><a href="index.html"><span class="circle">VL</span></a></div>
+                            <nav class="mobile-hide">
+                                <ul class="flexitem second-links">
+                                    <li><a href="index.html">Начало</a></li>
+                                    <li><a href="productTEST.html">Магазин</a></li>
+                                    
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right">
+                            <ul class="flexitem second-links">
+                                <li class="mobile-hide"><a href="#">
+                                    
+                                    
+                                </a></li>
+                                <li><a href="#" class="iscart" onclick="toggleCart()">
+                                    <div class="icon-large">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <div class="fly-item"><span class="item-number">0</span></div>
+                                    </div>
+                                    
+                                </a></li>
+                                <!-- Бутон за вход/изход -->
+                                <li id="loginLink"><a href="#" onclick="toggleLogin()">Вход</a></li>
+                                <li id="logoutLink" style="display: none;"><a href="#" onclick="logout()">Изход</a></li>
+                                <li><a> </a></li>
+                                <li id="registerLink" style="display: none;"><a href="#" onclick="toggleRegister()">Регистрация</a></li>
+                                <li id="loginStateContainer"></li> <!-- Тук ще се показва състоянието на влизане -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <form onsubmit="return false;" class="search">
+                    <span class="icon-large"><i class="ri-search-line"></i></span>
+                    <input type="search" placeholder="Търсене на продукти" name="query">
+                    <button type="submit">Търсене</button>
+                </form>
+                
+            </div>
+            
+        </header>
+
+        <main>
+            <div class="slider">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="myslider swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <!-- Добавете съдържание тук, ако е необходимо -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div> 
+    <div class="container">
+        <h2>Продукти</h2>
+        <div class="category-filters">
+            <div class="category-filter active" data-price="all">Всички</div>
+            <div class="category-filter" data-price="under-50">$0 - $50</div>
+            <div class="category-filter" data-price="50-100">$50 - $100</div>
+            <div class="category-filter" data-price="over-100">Над $100</div>
+        </div>
+        <div id="productsContainer" class="flex-container"></div> <!-- Преместете този елемент под хедъра -->
+    </div>
+    <div id="loginFormContainer" class="form-container">
+        <h2>Вход</h2>
+        <form id="loginForm">
+            <input type="email" placeholder="Имейл" required name="email"><br>
+            <input type="password" placeholder="Парола" required name="password"><br>
+            <button type="submit">Вход</button>
+        </form>
+        <p>Нямате акаунт? <a href="#" onclick="toggleRegister()">Регистрация</a></p>
+    </div>
+
+    <div id="registerFormContainer" class="form-container">
+        <h2>Регистрация</h2>
+        <form id="registerForm">
+            <input type="email" placeholder="Имейл" required name="email"><br>
+            <input type="password" placeholder="Парола" required name="password"><br>
+            <button type="submit">Регистрация</button>
+        </form>
+        <p>Вече имате акаунт? <a href="#" onclick="toggleLogin()">Вход</a></p>
+    </div>
+
+    <!-- Контейнер за кошницата -->
+<div id="cartContainer" class="cart-container">
+    <div class="cart-header">
+        <h2>Количка</h2>
+        <span class="cart-close" onclick="toggleCart()"><i class="ri-close-line"></i></span>
+    </div>
+    <ul id="cartItems" class="cart-items">
+        <!-- Тук ще бъдат динамично добавени елементите на кошницата -->
+    </ul>
+    <div id="cartTotal" class="cart-total">Общо: $0.00</div>
+    <!-- Бутон за изпращане на поръчки към базата данни -->
+    <button onclick="sendOrdersToDatabase()">Изпрати поръчка</button>
+</div>
+
+
+    <!-- Скриптове за вход, регистрация и изход -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.getElementById('featured-products-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('featured-products').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+
+    <!-- Скриптове за потребителска аутентикация -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
+            authDomain: "auto-shop-6eff9.firebaseapp.com",
+            projectId: "auto-shop-6eff9",
+            storageBucket: "auto-shop-6eff9.appspot.com",
+            messagingSenderId: "373886419201",
+            appId: "1:373886419201:web:eee6d2871b326dbb911b00",
+            measurementId: "G-FB36CP4YQZ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        function toggleLogin() {
+            document.getElementById("loginFormContainer").style.display = "block";
+            document.getElementById("registerFormContainer").style.display = "none";
+        }
+
+        function toggleRegister() {
+            document.getElementById("loginFormContainer").style.display = "none";
+            document.getElementById("registerFormContainer").style.display = "block";
+            
+        }
+
+        function toggleCart() {
+            const cartContainer = document.getElementById("cartContainer");
+            cartContainer.classList.toggle("open");
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Изходът е успешен.
+                document.getElementById("logoutLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("registerLink").style.display = "block";
+                document.getElementById("loginStateContainer").innerHTML = ""; // Изчистване на състоянието на входа
+                localStorage.removeItem('user'); // Премахване на информацията за потребителя от localStorage
+            }).catch((error) => {
+                // Възникна грешка.
+                console.error('Грешка при излизане:', error);
+            });
+        }
+
+        // Функция за проверка на състоянието на удостоверяване на потребителя и актуализиране на потребителския интерфейс съответно
+        function checkAuthState() {
+            const loginStateContainer = document.getElementById("loginStateContainer");
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // Потребителят е влезнал, актуализирайте потребителския интерфейс
+                    loginStateContainer.innerHTML = `  Добре дошли, ${user.email}!`;
+                    document.getElementById("logoutLink").style.display = "block";
+                    document.getElementById("loginLink").style.display = "none";
+                    document.getElementById("registerLink").style.display = "none";
+                } else {
+                    // Няма влязъл потребител, актуализирайте потребителския интерфейс
+                    loginStateContainer.innerHTML = "";
+                    document.getElementById("logoutLink").style.display = "none";
+                    document.getElementById("loginLink").style.display = "block";
+                    document.getElementById("registerLink").style.display = "block";
+                }
+            });
+        }
+
+        // Функция за обработка на представянето на формуляра за вход
+        function handleLoginForm() {
+            const loginForm = document.getElementById("loginForm");
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = loginForm.email.value;
+                const password = loginForm.password.value;
+                try {
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                    // Влизането е успешно.
+                    checkAuthState(); // Актуализирайте потребителския интерфейс
+                    document.getElementById("loginFormContainer").style.display = "none"; // Скриване на формуляра за вход
+                    loginForm.reset(); // Изчистете полетата на формуляра
+                } catch (error) {
+                    // Възникна грешка.
+                    console.error('Грешка при влизане:', error);
+                }
+            });
+        }
+
+        // Функция за обработка на представянето на формуляра за регистрация
+        function handleRegisterForm() {
+            const registerForm = document.getElementById("registerForm");
+            registerForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = registerForm.email.value;
+                const password = registerForm.password.value;
+                try {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    // Регистрацията е успешна.
+                    checkAuthState(); // Актуализирайте потребителския интерфейс
+                    document.getElementById("registerFormContainer").style.display = "none"; // Скриване на формуляра за регистрация
+                    registerForm.reset(); // Изчистете полетата на формуляра
+                } catch (error) {
+                    // Възникна грешка.
+                    console.error('Грешка при регистриране:', error);
+                }
+            });
+        }
+
+        // Функция за зареждане на продуктите от Firestore
+        async function loadProducts() {
+            const productsContainer = document.getElementById("productsContainer");
+            productsContainer.innerHTML = ""; // Изчистете предишното съдържание
+            const querySnapshot = await db.collection("products").get();
+            querySnapshot.forEach((doc) => {
+                const product = doc.data();
+                const productBox = document.createElement("div");
+                productBox.classList.add("product-box");
+                productBox.innerHTML = `
+                    <img src="${product.imageURL}" alt="${product.title}">
+                    <h3>${product.title}</h3>
+                    <p>${product.description}</p>
+                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <button class="add-to-cart-button" onclick="addToCart('${doc.id}', '${product.title}', ${product.price})">Добави в количката</button>
+                `;
+                productsContainer.appendChild(productBox);
+            });
+        }
+
+        // Функция за филтриране на продуктите по ценови обхвати
+        function filterProductsByPrice(priceRange) {
+            const productsContainer = document.getElementById("productsContainer");
+            const productBoxes = productsContainer.getElementsByClassName("product-box");
+            for (const productBox of productBoxes) {
+                const price = parseFloat(productBox.querySelector(".price").textContent.slice(1)); // Извличане на цената и преобразуването й в число
+                let display = "block";
+                if (priceRange === "under-50" && price > 50) {
+                    display = "none";
+                } else if (priceRange === "50-100" && (price < 50 || price > 100)) {
+                    display = "none";
+                } else if (priceRange === "over-100" && price < 100) {
+                    display = "none";
+                }
+                productBox.style.display = display;
+            }
+        }
+
+        // Функция за обработка на кликовете върху филтрите по категории
+        function handleCategoryFilterClicks() {
+            const categoryFilters = document.querySelectorAll(".category-filter");
+            categoryFilters.forEach((filter) => {
+                filter.addEventListener("click", () => {
+                    const priceRange = filter.getAttribute("data-price");
+                    filterProductsByPrice(priceRange);
+                    // Превключване на активния клас
+                    categoryFilters.forEach((f) => {
+                        f.classList.remove("active");
+                    });
+                    filter.classList.add("active");
+                });
+            });
+        }
+
+         // Function to add a product to the cart
+         function addToCart(productId, productName, productPrice) {
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+            if (existingItemIndex !== -1) {
+                // Product already exists in the cart, update quantity
+                cartItems[existingItemIndex].quantity++;
+            } else {
+                // Product does not exist in the cart, add it
+                cartItems.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            updateCartUI();
+        }
+
+        // Функция за обновяване на потребителския интерфейс на кошницата
+        // Function to update the UI of the cart
+        function updateCartUI() {
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const cartItemsElement = document.getElementById("cartItems");
+            const cartTotalElement = document.getElementById("cartTotal");
+            cartItemsElement.innerHTML = ""; // Clear previous content
+            let total = 0;
+            cartItems.forEach((item) => {
+                const cartItem = document.createElement("li");
+                cartItem.classList.add("cart-item");
+                cartItem.innerHTML = `
+                    <img src="${item.imageURL}" alt="${item.name}">
+                    <div class="cart-item-name">${item.name} x ${item.quantity}</div>
+                    <div class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</div>
+                `;
+                cartItemsElement.appendChild(cartItem);
+                total += item.price * item.quantity;
+            });
+            cartTotalElement.textContent = `Общо: $${total.toFixed(2)}`;
+            const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+            document.querySelectorAll(".item-number").forEach((itemNumber) => {
+                itemNumber.textContent = cartItemCount;
+            });
+        }
+
+         // Function to remove a product from the cart
+         function removeFromCart(productId) {
+            let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const itemIndex = cartItems.findIndex(item => item.id === productId);
+            if (itemIndex !== -1) {
+                cartItems.splice(itemIndex, 1);
+                localStorage.setItem("cartItems", JSON.stringify(cartItems));
+                updateCartUI();
+            }
+        }
+        function searchProducts() {
+            const searchInput = document.getElementById("searchInput");
+            const searchTerm = searchInput.value.toLowerCase();
+            const productBoxes = document.querySelectorAll(".product-box");
+            productBoxes.forEach((box) => {
+                const title = box.querySelector("h3").textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    box.style.display = "block";
+                } else {
+                    box.style.display = "none";
+                }
+            });
+        }
+
+        // Function to send orders to the database
+        function sendOrdersToDatabase() {
+            const user = firebase.auth().currentUser;
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            if (user && cartItems.length > 0) {
+                const orderData = {
+                    userId: user.uid,
+                    email: user.email,
+                    items: cartItems,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                db.collection("orders").add(orderData)
+                    .then(() => {
+                        console.log("Order placed successfully!");
+                        localStorage.removeItem("cartItems"); // Clear cart items from local storage
+                        updateCartUI(); // Update UI to reflect empty cart
+                    })
+                    .catch((error) => {
+                        console.error("Error placing order:", error);
+                    });
+            }
+        }
+
+        // Initialize the app
+        window.onload = function() {
+            loadProducts();
+            handleLoginForm();
+            handleRegisterForm();
+            checkAuthState();
+            updateCartUI();
+            handleCategoryFilterClicks();
+        };
+
+        // Извикване на функцията за инициализация след пълното зареждане на DOM
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</body>
+</html>

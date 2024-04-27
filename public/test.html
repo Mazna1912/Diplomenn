@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,15 +11,13 @@
     <style>
         /* Styles for login and registration forms */
         .form-container {
-            display: none;
-            /* Hidden by default */
+            display: none; /* Hidden by default */
             max-width: 300px;
             padding: 20px;
             background-color: #f2f2f2;
             margin: 20px auto;
             border-radius: 5px;
         }
-
         .form-container input[type="email"],
         .form-container input[type="password"],
         .form-container input[type="text"],
@@ -30,21 +27,8 @@
             padding: 10px;
             box-sizing: border-box;
         }
-
-        #bg-image {
-            z-index: -1;
-            object-fit: cover;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0
-        }
     </style>
 </head>
-
 <body>
     <div id="page" class="site page-home">
         <header>
@@ -71,52 +55,38 @@
                                 <ul class="flexitem second-links">
                                     <li><a href="index.html">Home</a></li>
                                     <li><a href="page-single.html">Shop</a></li>
-
+                                    
                                 </ul>
                             </nav>
                         </div>
                         <div class="right">
                             <ul class="flexitem second-links">
                                 <li class="mobile-hide"><a href="#">
-                                        <div class="icon-large"><i class="ri-heart-line"></i></div>
-                                        <div class="fly-item"><span class="item-number">0</span></div>
-                                    </a></li>
+                                    <div class="icon-large"><i class="ri-heart-line"></i></div>
+                                    <div class="fly-item"><span class="item-number">0</span></div>
+                                </a></li>
                                 <li><a href="#" class="iscart">
-                                        <div class="icon-large">
-                                            <i class="ri-shopping-cart-line"></i>
-                                            <div class="fly-item"><span class="item-number">0</span></div>
-                                        </div>
-                                        <div class="icon-text">
-                                            <div class="mini-text">Total</div>
-                                            <div class="cart-total">$0.00</div>
-                                        </div>
-                                    </a></li>
+                                    <div class="icon-large">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <div class="fly-item"><span class="item-number">0</span></div>
+                                    </div>
+                                    <div class="icon-text">
+                                        <div class="mini-text">Total</div>
+                                        <div class="cart-total">$0.00</div>
+                                    </div>
+                                </a></li>
                                 <!-- Button for login/logout -->
                                 <li id="loginLink"><a href="#" onclick="toggleLogin()">Login</a></li>
-                                <li id="logoutLink" style="display: none;"><a href="#" onclick="logout()">Logout</a>
-                                </li>
-                                <li id="registerLink" style="display: none;"><a href="#"
-                                        onclick="toggleRegister()">Register</a></li>
-                                <li id="addProductLink" style="display: none;"><a href="#"
-                                        onclick="toggleAddProduct()">Add Product</a></li>
+                                <li id="logoutLink" style="display: none;"><a href="#" onclick="logout()">Logout</a></li>
+                                <li id="registerLink" style="display: none;"><a href="#" onclick="toggleRegister()">Register</a></li>
+                                <li id="addProductLink" style="display: none;"><a href="#" onclick="toggleAddProduct()">Add Product</a></li>
                                 <li id="loginStateContainer"></li> <!-- This will display the login state -->
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="right">
-                <div class="search-box">
-                    <form action="" class="search">
-                        <span class="icon-large"><i class="ri-search-line"></i></span>
-                        <input type="search" placeholder="Search for products">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
         </header>
-        <!-- <img src="C:\Users\35987\Desktop\Нова папка\Assets\new-car-parts-white-background-copy-space-view-above-new-car-parts-white-background-copy-space-180995448-transformed.webp"
-            id="bg-image"> -->
 
         <main>
             <div class="slider">
@@ -125,16 +95,24 @@
                         <div class="myslider swiper">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <!-- Add content here for slides if necessary -->
+                                    <img src="car1.jpg" alt="Car Part 1">
                                 </div>
+                                <div class="swiper-slide">
+                                    <img src="car2.jpg" alt="Car Part 2">
+                                </div>
+                                <!-- Add more slides with car parts here -->
                             </div>
+                            <!-- Add navigation controls or autoplay if desired -->
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
 
-    </div>
+    </div> 
 
     <div id="loginFormContainer" class="form-container">
         <h2>Login</h2>
@@ -170,7 +148,7 @@
     <!-- Scripts for login, registration, and logout -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        document.getElementById('featured-products-btn').addEventListener('click', function (event) {
+        document.getElementById('featured-products-btn').addEventListener('click', function(event) {
             event.preventDefault();
             document.getElementById('featured-products').scrollIntoView({ behavior: 'smooth' });
         });
@@ -183,13 +161,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
-            authDomain: "auto-shop-6eff9.firebaseapp.com",
-            projectId: "auto-shop-6eff9",
-            storageBucket: "auto-shop-6eff9.appspot.com",
-            messagingSenderId: "373886419201",
-            appId: "1:373886419201:web:eee6d2871b326dbb911b00",
-            measurementId: "G-FB36CP4YQZ"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -270,7 +248,7 @@
             checkAuthState(); // Update UI
         });
 
-        document.getElementById("loginForm").addEventListener("submit", function (event) {
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent page reload
             const email = document.getElementById("loginForm").elements["email"].value;
             const password = document.getElementById("loginForm").elements["password"].value;
@@ -280,7 +258,7 @@
                     console.log("User logged in:", userCredential.user);
                     document.getElementById("loginFormContainer").style.display = "none"; // Hide the form
                     document.getElementById("loginSuccessMessage").style.display = "block"; // Display success message
-                    setTimeout(function () {
+                    setTimeout(function() {
                         document.getElementById("loginSuccessMessage").style.display = "none"; // Hide success message after 3 seconds
                     }, 3000);
                 })
@@ -290,7 +268,7 @@
                 });
         });
 
-        document.getElementById("registerForm").addEventListener("submit", function (event) {
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent page reload
             const email = document.getElementById("registerForm").elements["email"].value;
             const password = document.getElementById("registerForm").elements["password"].value;
@@ -300,7 +278,7 @@
                     console.log("User registered:", userCredential.user);
                     document.getElementById("registerFormContainer").style.display = "none"; // Hide the form
                     document.getElementById("registerSuccessMessage").style.display = "block"; // Display success message
-                    setTimeout(function () {
+                    setTimeout(function() {
                         document.getElementById("registerSuccessMessage").style.display = "none"; // Hide success message after 3 seconds
                     }, 3000);
                 })
@@ -311,7 +289,7 @@
         });
 
 
-        document.getElementById("addProductForm").addEventListener("submit", function (event) {
+        document.getElementById("addProductForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent page reload
             const title = document.getElementById("addProductForm").elements["title"].value;
             const description = document.getElementById("addProductForm").elements["description"].value;
@@ -328,7 +306,7 @@
                     console.log("Product added with ID: ", docRef.id);
                     document.getElementById("addProductFormContainer").style.display = "none"; // Hide the form
                     document.getElementById("productAddedMessage").style.display = "block"; // Display success message
-                    setTimeout(function () {
+                    setTimeout(function() {
                         document.getElementById("productAddedMessage").style.display = "none"; // Hide success message after 3 seconds
                     }, 3000);
                 })
@@ -339,5 +317,4 @@
 
     </script>
 </body>
-
 </html>

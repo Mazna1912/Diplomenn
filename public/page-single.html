@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proektche</title>
+    <link rel="stylesheet" href="C:\Users\35987\Desktop\Нова папка\style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        /* Styles for login and registration forms */
+        .form-container {
+            display: none; /* Hidden by default */
+            max-width: 300px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        .form-container input[type="email"],
+        .form-container input[type="password"],
+        .form-container input[type="text"],
+        .form-container button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        /* Styles for cart */
+        .cart-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            background-color: #f2f2f2;
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .cart-container.open {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .cart-close {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            max-width: 50px;
+            height: auto;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .cart-item-name {
+            flex-grow: 1;
+        }
+
+        .cart-item-remove {
+            color: red;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Styles for product boxes */
+        .product-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-box h3 {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .product-box p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .product-box .price {
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .add-to-cart-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #45a049;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Разпределя продуктите равномерно по ширина */
+        }
+
+        .product-box {
+            width: calc(33.33% - 20px); /* Третина от ширината на родителския елемент, защитена от външните отстъпи */
+            margin-bottom: 20px;
+        }
+
+        /* Променени стилове за да центрирате заглавието "Продукти" */
+        .container h2 {
+            text-align: center; /* Центрирайте текста */
+            margin-bottom: 20px; /* Подравняващо между заглавието и продуктите */
+        }
+
+        /* Styles for category filters */
+        .category-filters {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .category-filter {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .category-filter.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="page" class="site page-home">
+        <header>
+            <div class="header-top mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <div class="left">
+                            <!-- Add content here if necessary -->
+                        </div>
+                        <div class="right">
+                            <!-- Add content here if necessary -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <a href="#" class="trigger desktop-hide"><i class="ri-menu-2-line"></i></a>
+                        <div class="left flexitem">
+                            <div class="logo"><a href="index.html"><span class="circle">VL</span></a></div>
+                            <nav class="mobile-hide">
+                                <ul class="flexitem second-links">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="productTEST.html">Shop</a></li>
+                                    
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right">
+                            <ul class="flexitem second-links">
+                                <li class="mobile-hide"><a href="#">
+                                    
+                                    
+                                </a></li>
+                                <li><a href="#" class="iscart" onclick="toggleCart()">
+                                    <div class="icon-large">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <div class="fly-item"><span class="item-number">0</span></div>
+                                    </div>
+                                    <div class="icon-text">
+                                        <div class="mini-text">Total</div>
+                                        <div class="cart-total">$0.00</div>
+                                    </div>
+                                </a></li>
+                                <!-- Button for login/logout -->
+                                <li id="loginLink"><a href="#" onclick="toggleLogin()">Login</a></li>
+                                <li id="logoutLink" style="display: none;"><a href="#" onclick="logout()">Logout</a></li>
+                                <li id="registerLink" style="display: none;"><a href="#" onclick="toggleRegister()">Register</a></li>
+                                <li id="addProductLink" style="display: none;"><a href="#" onclick="toggleAddProduct()">Add Product</a></li>
+                                <li id="loginStateContainer"></li> <!-- This will display the login state -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <form onsubmit="return false;" class="search">
+                    <span class="icon-large"><i class="ri-search-line"></i></span>
+                    <input type="search" placeholder="Search for products" name="query">
+                    <button type="submit">Search</button>
+                </form>
+                
+            </div>
+            
+        </header>
+
+        <main>
+            <div class="slider">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="myslider swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <!-- Add content here for slides if necessary -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div> 
+    <div class="container">
+        <h2>Products</h2>
+        <div class="category-filters">
+            <div class="category-filter active" data-price="all">All</div>
+            <div class="category-filter" data-price="under-50">$0 - $50</div>
+            <div class="category-filter" data-price="50-100">$50 - $100</div>
+            <div class="category-filter" data-price="over-100">Over $100</div>
+        </div>
+        <div id="productsContainer" class="flex-container"></div> <!-- Местете този елемент под хедъра -->
+    </div>
+    <div id="loginFormContainer" class="form-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" placeholder="Email" required name="email"><br>
+            <input type="password" placeholder="Password" required name="password"><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" onclick="toggleRegister()">Register</a></p>
+    </div>
+
+    <div id="registerFormContainer" class="form-container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="email" placeholder="Email" required name="email"><br>
+            <input type="password" placeholder="Password" required name="password"><br>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="#" onclick="toggleLogin()">Login</a></p>
+    </div>
+
+    <div id="addProductFormContainer" class="form-container" style="display: none;">
+        <h2>Add Product</h2>
+        <form id="addProductForm">
+            <input type="text" placeholder="Product Title" required name="title"><br>
+            <input type="text" placeholder="Product Description" required name="description"><br>
+            <input type="text" placeholder="Product Image URL" required name="imageURL"><br>
+            <input type="number" placeholder="Product Price" required name="price"><br>
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+    <!-- Cart container -->
+    <!-- Cart container -->
+<div id="cartContainer" class="cart-container">
+    <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <span class="cart-close" onclick="toggleCart()"><i class="ri-close-line"></i></span>
+    </div>
+    <ul id="cartItems" class="cart-items">
+        <!-- Cart items will be dynamically added here -->
+    </ul>
+    <div id="cartTotal" class="cart-total">Total: $0.00</div>
+    <!-- Button to send orders to the database -->
+    <button onclick="sendOrdersToDatabase()">Send Order</button>
+</div>
+
+
+    <!-- Scripts for login, registration, and logout -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.getElementById('featured-products-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('featured-products').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+
+    <!-- User Authentication Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOdObTLbT06baZLWN4VCse7-j8sCt2ut8",
+            authDomain: "auto-shop-6eff9.firebaseapp.com",
+            projectId: "auto-shop-6eff9",
+            storageBucket: "auto-shop-6eff9.appspot.com",
+            messagingSenderId: "373886419201",
+            appId: "1:373886419201:web:eee6d2871b326dbb911b00",
+            measurementId: "G-FB36CP4YQZ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        function toggleLogin() {
+            document.getElementById("loginFormContainer").style.display = "block";
+            document.getElementById("registerFormContainer").style.display = "none";
+        }
+
+        function toggleRegister() {
+            document.getElementById("loginFormContainer").style.display = "none";
+            document.getElementById("registerFormContainer").style.display = "block";
+            
+        }
+
+        function toggleCart() {
+            const cartContainer = document.getElementById("cartContainer");
+            cartContainer.classList.toggle("open");
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Logout successful.
+                document.getElementById("logoutLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("registerLink").style.display = "block";
+                document.getElementById("loginStateContainer").innerHTML = ""; // Clear login state
+                localStorage.removeItem('user'); // Remove user info from localStorage
+            }).catch((error) => {
+                // An error occurred.
+                console.error('Error signing out:', error);
+            });
+        }
+
+        // Function to check authentication state and update UI accordingly
+        function checkAuthState() {
+            const loginStateContainer = document.getElementById("loginStateContainer");
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in, update UI accordingly
+                    loginStateContainer.innerHTML = `  Welcome, ${user.email}!`;
+                    document.getElementById("logoutLink").style.display = "block";
+                    document.getElementById("loginLink").style.display = "none";
+                    document.getElementById("registerLink").style.display = "none";
+                } else {
+                    // No user is signed in, update UI accordingly
+                    loginStateContainer.innerHTML = "";
+                    document.getElementById("logoutLink").style.display = "none";
+                    document.getElementById("loginLink").style.display = "block";
+                    document.getElementById("registerLink").style.display = "block";
+                }
+            });
+        }
+
+        // Function to handle login form submission
+        function handleLoginForm() {
+            const loginForm = document.getElementById("loginForm");
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = loginForm.email.value;
+                const password = loginForm.password.value;
+                try {
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                    // Login successful.
+                    checkAuthState(); // Update UI
+                    document.getElementById("loginFormContainer").style.display = "none"; // Hide login form
+                    loginForm.reset(); // Clear form fields
+                } catch (error) {
+                    // An error occurred.
+                    console.error('Error logging in:', error);
+                }
+            });
+        }
+
+        // Function to handle registration form submission
+        function handleRegisterForm() {
+            const registerForm = document.getElementById("registerForm");
+            registerForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = registerForm.email.value;
+                const password = registerForm.password.value;
+                try {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    // Registration successful.
+                    checkAuthState(); // Update UI
+                    document.getElementById("registerFormContainer").style.display = "none"; // Hide register form
+                    registerForm.reset(); // Clear form fields
+                } catch (error) {
+                    // An error occurred.
+                    console.error('Error registering:', error);
+                }
+            });
+        }
+
+        // Function to load products from Firestore
+        async function loadProducts() {
+            const productsContainer = document.getElementById("productsContainer");
+            productsContainer.innerHTML = ""; // Clear previous content
+            const querySnapshot = await db.collection("products").get();
+            querySnapshot.forEach((doc) => {
+                const product = doc.data();
+                const productBox = document.createElement("div");
+                productBox.classList.add("product-box");
+                productBox.innerHTML = `
+                    <img src="${product.imageURL}" alt="${product.title}">
+                    <h3>${product.title}</h3>
+                    <p>${product.description}</p>
+                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <button class="add-to-cart-button" onclick="addToCart('${doc.id}', '${product.title}', ${product.price})">Add to Cart</button>
+                `;
+                productsContainer.appendChild(productBox);
+            });
+        }
+
+        // Function to filter products by price range
+        function filterProductsByPrice(priceRange) {
+            const productsContainer = document.getElementById("productsContainer");
+            const productBoxes = productsContainer.getElementsByClassName("product-box");
+            for (const productBox of productBoxes) {
+                const price = parseFloat(productBox.querySelector(".price").textContent.slice(1)); // Extract price and convert to number
+                let display = "block";
+                if (priceRange === "under-50" && price > 50) {
+                    display = "none";
+                } else if (priceRange === "50-100" && (price < 50 || price > 100)) {
+                    display = "none";
+                } else if (priceRange === "over-100" && price < 100) {
+                    display = "none";
+                }
+                productBox.style.display = display;
+            }
+        }
+
+        // Function to handle category filter clicks
+        function handleCategoryFilterClicks() {
+            const categoryFilters = document.querySelectorAll(".category-filter");
+            categoryFilters.forEach((filter) => {
+                filter.addEventListener("click", () => {
+                    const priceRange = filter.getAttribute("data-price");
+                    filterProductsByPrice(priceRange);
+                    // Toggle active class
+                    categoryFilters.forEach((f) => {
+                        f.classList.remove("active");
+                    });
+                    filter.classList.add("active");
+                });
+            });
+        }
+
+        // Function to add a product to the cart
+        function addToCart(productId, productName, productPrice) {
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+            if (existingItemIndex !== -1) {
+                // Product already exists in the cart, update quantity
+                cartItems[existingItemIndex].quantity++;
+            } else {
+                // Product does not exist in the cart, add it
+                cartItems.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            updateCartUI();
+        }
+        // Function to search products
+        function searchProducts() {
+            const searchInput = document.getElementById("searchInput");
+            const searchTerm = searchInput.value.toLowerCase();
+            const productBoxes = document.querySelectorAll(".product-box");
+            productBoxes.forEach((box) => {
+                const title = box.querySelector("h3").textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    box.style.display = "block";
+                } else {
+                    box.style.display = "none";
+                }
+            });
+        }
+
+        // Function to update the UI of the cart
+function updateCartUI() {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const cartItemsElement = document.getElementById("cartItems");
+    const cartTotalElement = document.getElementById("cartTotal");
+    cartItemsElement.innerHTML = ""; // Clear previous content
+    let total = 0;
+    cartItems.forEach((item) => {
+        const cartItem = document.createElement("li");
+        cartItem.classList.add("cart-item");
+        cartItem.innerHTML = `
+            <img src="${item.imageURL}" alt="${item.name}">
+            <div class="cart-item-name">${item.name} x ${item.quantity}</div>
+            <div class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</div>
+        `;
+        cartItemsElement.appendChild(cartItem);
+        total += item.price * item.quantity;
+    });
+    cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+    const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    document.querySelectorAll(".item-number").forEach((itemNumber) => {
+        itemNumber.textContent = cartItemCount;
+    });
+}
+
+
+        // Function to remove a product from the cart
+        function removeFromCart(productId) {
+            let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const itemIndex = cartItems.findIndex(item => item.id === productId);
+            if (itemIndex !== -1) {
+                cartItems.splice(itemIndex, 1);
+                localStorage.setItem("cartItems", JSON.stringify(cartItems));
+                updateCartUI();
+            }
+        }
+
+        // Function to send orders to the database
+        function sendOrdersToDatabase() {
+            const user = firebase.auth().currentUser;
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            if (user && cartItems.length > 0) {
+                const orderData = {
+                    userId: user.uid,
+                    email: user.email,
+                    items: cartItems,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                db.collection("orders").add(orderData)
+                    .then(() => {
+                        console.log("Order placed successfully!");
+                        localStorage.removeItem("cartItems"); // Clear cart items from local storage
+                        updateCartUI(); // Update UI to reflect empty cart
+                    })
+                    .catch((error) => {
+                        console.error("Error placing order:", error);
+                    });
+            }
+        }
+
+        // Initialize the app
+        window.onload = function() {
+            loadProducts();
+            handleLoginForm();
+            handleRegisterForm();
+            checkAuthState();
+            updateCartUI();
+            handleCategoryFilterClicks();
+        };
+    </script>
+
+</body>
+</html>

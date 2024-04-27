@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Продуктна страница</title>
+  <link rel="stylesheet" href="C:\Users\35987\Desktop\Нова папка\style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <!-- Вашият хедър код -->
+    <div class="header-top mobile-hide">
+      <!-- Вашият код за хедъра -->
+    </div>
+    <div class="header-nav">
+      <!-- Вашият код за навигацията в хедъра -->
+    </div>
+    <div class="header-main mobile-hide">
+      <!-- Вашият код за основния хедър -->
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="left-column">
+      <img id="productImage" src="" alt="">
+    </div>
+
+    <div class="right-column">
+      <div class="product-description">
+        <span id="productCategory"></span>
+        <h1 id="productTitle"></h1>
+        <p id="productDescription"></p>
+      </div>
+
+      <div class="product-price">
+        <span id="productPrice"></span>
+        <a href="#" class="cart-btn">Добави в количката</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <!-- Вашият футър код -->
+    <div class="widgets">
+      <!-- Вашият код за футъра -->
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" charset="utf-8"></script>
+  <script src="script.js" charset="utf-8"></script>
+  <script>
+    const productData = {
+      image: "Assets/гарнитура-за-глава-VICTOR+REINZ-61-53750-10-Honda-Accord-7-Tourer-CM-2.2-i-CTDi-CN2-imagetabig-845520896103281-VICTOR+REINZ.jpg",
+      category: "Гарнитура на глава",
+      title: "Гарнитура на глава за Хонда акорд",
+      description: "Описание на продукта....аосхйдиоасхйдоийхасоихйдпасйпдойаспдйпасйдпасйдпсайпдасйпдйаспдйаспйдпасйдс",
+      price: "209.99ЛВ"
+    };
+
+    document.getElementById("productImage").src = productData.image;
+    document.getElementById("productCategory").innerText = productData.category;
+    document.getElementById("productTitle").innerText = productData.title;
+    document.getElementById("productDescription").innerText = productData.description;
+    document.getElementById("productPrice").innerText = productData.price;
+  </script>
+</body>
+</html>

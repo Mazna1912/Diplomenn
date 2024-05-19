@@ -30,8 +30,8 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "index.html"
+        "source": "build",
+        "destination": "/index.html"
       }
     ]
   },

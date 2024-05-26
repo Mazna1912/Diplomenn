@@ -219,32 +219,53 @@
 
         // Функция за проверка на състоянието на аутентикацията и актуализиране на UI спрямо това
         function checkAuthState() {
-            const loginStateContainer = document.getElementById("loginStateContainer");
-            const userString = localStorage.getItem('user');
-            if (userString) {
-                const user = JSON.parse(userString);
-                loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
-                document.getElementById("logoutLink").style.display = "block";
-                document.getElementById("loginLink").style.display = "none";
-                document.getElementById("registerLink").style.display = "none";
-                document.getElementById("addProductLink").style.display = "block";
-            } else {
-                const user = firebase.auth().currentUser;
-                if (user) {
-                    loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
-                    document.getElementById("logoutLink").style.display = "block";
-                    document.getElementById("loginLink").style.display = "none";
-                    document.getElementById("registerLink").style.display = "none";
+    const loginStateContainer = document.getElementById("loginStateContainer");
+    const userString = localStorage.getItem('user');
+    if (userString) {
+        const user = JSON.parse(userString);
+        loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
+        document.getElementById("logoutLink").style.display = "block";
+        document.getElementById("loginLink").style.display = "none";
+        document.getElementById("registerLink").style.display = "none";
+
+        db.collection("users").doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                if (userData.role === 'admin') {
                     document.getElementById("addProductLink").style.display = "block";
                 } else {
-                    loginStateContainer.innerHTML = "<p>Не сте влезнали</p>";
-                    document.getElementById("logoutLink").style.display = "none";
-                    document.getElementById("loginLink").style.display = "block";
-                    document.getElementById("registerLink").style.display = "block";
                     document.getElementById("addProductLink").style.display = "none";
                 }
             }
+        });
+    } else {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            loginStateContainer.innerHTML = `<p>Влезнал като: ${user.email}</p>`;
+            document.getElementById("logoutLink").style.display = "block";
+            document.getElementById("loginLink").style.display = "none";
+            document.getElementById("registerLink").style.display = "none";
+
+            db.collection("users").doc(user.uid).get().then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    if (userData.role === 'admin') {
+                        document.getElementById("addProductLink").style.display = "block";
+                    } else {
+                        document.getElementById("addProductLink").style.display = "none";
+                    }
+                }
+            });
+        } else {
+            loginStateContainer.innerHTML = "<p>Не сте влезнали</p>";
+            document.getElementById("logoutLink").style.display = "none";
+            document.getElementById("loginLink").style.display = "block";
+            document.getElementById("registerLink").style.display = "block";
+            document.getElementById("addProductLink").style.display = "none";
         }
+    }
+}
+
 
         // Абониране за промените в състоянието на аутентикацията
         firebase.auth().onAuthStateChanged((user) => {
@@ -302,30 +323,43 @@
 
         // Обработчик за изпращане на формата за добавяне на продукт
         document.getElementById("addProductForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Предотвратяване на презареждането на страницата
-            const title = document.getElementById("addProductForm").elements["title"].value;
-            const description = document.getElementById("addProductForm").elements["description"].value;
-            const imageURL = document.getElementById("addProductForm").elements["imageURL"].value;
-            const price = parseFloat(document.getElementById("addProductForm").elements["price"].value);
+    event.preventDefault(); // Предотвратяване на презареждането на страницата
+    const user = firebase.auth().currentUser;
+    if (user) {
+        db.collection("users").doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                if (userData.role === 'admin') {
+                    const title = document.getElementById("addProductForm").elements["title"].value;
+                    const description = document.getElementById("addProductForm").elements["description"].value;
+                    const imageURL = document.getElementById("addProductForm").elements["imageURL"].value;
+                    const price = parseFloat(document.getElementById("addProductForm").elements["price"].value);
 
-            db.collection("products").add({
-                title: title,
-                description: description,
-                imageURL: imageURL,
-                price: price
-            })
-                .then((docRef) => {
-                    console.log("Продуктът беше добавен с ID: ", docRef.id);
-                    document.getElementById("addProductFormContainer").style.display = "none"; // Скриване на формата
-                    document.getElementById("productAddedMessage").style.display = "block"; // Показване на съобщението за успех
-                    setTimeout(function () {
-                        document.getElementById("productAddedMessage").style.display = "none"; // Скриване на съобщението за успех след 3 секунди
-                    }, 3000);
-                })
-                .catch((error) => {
-                    console.error("Грешка при добавяне на продукт: ", error);
-                });
+                    db.collection("products").add({
+                        title: title,
+                        description: description,
+                        imageURL: imageURL,
+                        price: price
+                    })
+                    .then((docRef) => {
+                        console.log("Продуктът беше добавен с ID: ", docRef.id);
+                        document.getElementById("addProductFormContainer").style.display = "none"; // Скриване на формата
+                        document.getElementById("productAddedMessage").style.display = "block"; // Показване на съобщението за успех
+                        setTimeout(function () {
+                            document.getElementById("productAddedMessage").style.display = "none"; // Скриване на съобщението за успех след 3 секунди
+                        }, 3000);
+                    })
+                    .catch((error) => {
+                        console.error("Грешка при добавяне на продукт: ", error);
+                    });
+                } else {
+                    console.error("Само администраторите могат да добавят продукти.");
+                }
+            }
         });
+    }
+});
+
     </script>
 </body>
 
